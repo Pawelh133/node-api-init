@@ -1,0 +1,29 @@
+{
+  "name": "nodeaapi",
+  "version": "1.0.0",
+  "description": "node API with babel",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon server.js --exec babel-node --presets es2017"
+  },
+  "dependencies": {
+    "express": "^4.16.3",
+    "mongoose": "^5.1.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-register": "^6.26.0",
+    "babel-preset-es2017": "^6.24.1",
+    "nodemon": "^1.17.4"
+  },
+  "babel": {
+    "presets": [
+      "env",
+      "es2017"
+    ],
+    "sourceMaps": true,
+    "retainLines": true
+  }
+}
