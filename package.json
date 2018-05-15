@@ -9,19 +9,21 @@
   },
   "dependencies": {
     "express": "^4.16.3",
-    "mongoose": "^5.1.0"
+    "express-validation": "^1.0.2",
+    "joi": "^13.3.0",
+    "mongoose": "^5.1.0",
+    "mysql2": "^1.5.3",
+    "sequelize": "^4.37.7"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-register": "^6.26.0",
-    "babel-preset-es2017": "^6.24.1",
     "nodemon": "^1.17.4"
   },
   "babel": {
     "presets": [
-      "env",
-      "es2017"
+      "env"
     ],
     "sourceMaps": true,
     "retainLines": true
