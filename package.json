@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server.js --require dotenv/config --exec babel-node --presets env"
+    "start": "nodemon server.js --require dotenv/config --exec babel-node --presets env",
+    "dbmigrate": "babel-node ./api/database/migrations --require dotenv/config --presets env"
   },
   "dependencies": {
     "dotenv": "^5.0.1",
