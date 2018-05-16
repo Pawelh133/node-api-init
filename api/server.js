@@ -1,9 +1,9 @@
 import express from 'express';
 import dotenv from 'dotenv/config';
 import bodyParser from 'body-parser';
-import mongoseRegister from './api/mgModels/register';
-import sequelizeRegister from './api/database/sequelizeRegister';
-import routes from './api/routes';
+import mongoseRegister from './mgModels/register';
+import sequelizeRegister from './database/sequelizeRegister';
+import routes from './routes';
 import validate from 'express-validation';
 
 const app = express();
