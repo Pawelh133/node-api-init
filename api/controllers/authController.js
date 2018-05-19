@@ -3,6 +3,20 @@ import randtoken from 'rand-token';
 
 let refreshTokens = {};
 
+export const register = (req, res) => {
+  const login = req.body.login;
+  const password = req.body.password;
+
+  if (password.length < process.env.MIN_PASSWORD_LENGTH){
+    res.status(400);
+    res.send(`password needs to be more than ${process.env.MIN_PASSWORD_LENGTH} letters.`);
+    return;
+  }
+  else {
+    res.send(201);
+  }
+}
+
 export const login = (req, res) => {
   const username = req.body.username;
   const password = req.body.password;

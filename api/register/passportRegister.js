@@ -4,9 +4,9 @@ import * as passportJWT from 'passport-jwt';
 const stategyJWT = passportJWT.Strategy;
 const exctratJWT = passportJWT.ExtractJwt;
 
-passport.serializeUser((user, done) => {
-  done(null, user.username)
-})
+// passport.serializeUser((user, done) => {
+//   done(null, user.username)
+// })
 
   /*
   passport.deserializeUser(function (username, done) {

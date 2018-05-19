@@ -1,9 +1,9 @@
 import express from 'express';
 import dotenv from 'dotenv/config';
-import passportRegister from './register/passport';
+import passportRegister from './register/passportRegister';
 import bodyParser from 'body-parser';
-import mongoseRegister from './mgModels/register';
-import sequelizeRegister from './database/sequelizeRegister';
+import mongoseRegister from './register/mongoRegister';
+import sequelizeRegister from './register/sequelizeRegister';
 import routes from './routes';
 import validate from 'express-validation';
 import passport from 'passport';
@@ -13,6 +13,7 @@ const port = process.env.PORT || 3000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+
 app.use(passport.initialize())
 app.use(passport.session())
 

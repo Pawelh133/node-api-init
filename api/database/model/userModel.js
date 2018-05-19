@@ -1,7 +1,7 @@
 import Sequelize from 'sequelize';
-import sequelizeConfig from '../sequelizeRegister';
+import sequelizeRegister from '../../register/sequelizeRegister';
 
-const User = sequelizeConfig.define('user', {
+const User = sequelizeRegister.define('user', {
   firstName: {
     type: Sequelize.STRING
   },
