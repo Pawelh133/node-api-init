@@ -2,13 +2,18 @@ import mongoose from 'mongoose';
 import _ from 'lodash';
 const Users = mongoose.model('Users');
 
+import User from '../database/model/userModel';
+
+//mysql
 export const listUsers = (req, res) => {
-  Users.find({}, (err, user) => {
+  User.findAll().then((users, err) => {
     if (err)
       res.send(err);
-    res.json(user);
+    res.json(users);
   });
 };
+
+//Mongo
 
 export const createUser = (req, res) => {
   const new_user = new Users(req.body);
