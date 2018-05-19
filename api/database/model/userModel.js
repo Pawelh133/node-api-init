@@ -2,14 +2,18 @@ import Sequelize from 'sequelize';
 import sequelizeRegister from '../../register/sequelizeRegister';
 
 const User = sequelizeRegister.define('user', {
-  firstName: {
+  userId: {
+    type: Sequelize.UUID,
+    defaultValue: Sequelize.UUIDV4
+  },
+  userName: {
     type: Sequelize.STRING
   },
-  lastName: {
+  password: {
     type: Sequelize.STRING
   },
-  cwel: {
-    type: Sequelize.STRING
+  isConfirmed: {
+    type: Sequelize.BOOLEAN
   }
 });
 

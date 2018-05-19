@@ -1,19 +1,35 @@
 import jwt from 'jsonwebtoken';
 import randtoken from 'rand-token';
+import setResponse from '../helpers/statusMessageHelper';
+import * as authService from '../services/authService';
 
 let refreshTokens = {};
 
-export const register = (req, res) => {
-  const login = req.body.login;
-  const password = req.body.password;
+export const register = async (req, res) => {
+  try {
+    const username = req.body.username;
+    const password = req.body.password;
 
-  if (password.length < process.env.MIN_PASSWORD_LENGTH){
-    res.status(400);
-    res.send(`password needs to be more than ${process.env.MIN_PASSWORD_LENGTH} letters.`);
-    return;
+    if (!username) {
+      setResponse(400, 'username nie może być pusty');
+      return;
+    }
+
+    if (password.length < process.env.MIN_PASSWORD_LENGTH) {
+      setResponse(400, `hasło musi zawierać przynajmniej ${process.env.MIN_PASSWORD_LENGTH} znaki.`);
+      return;
+    }
+
+    const response = await authService.register(username, password);
+    if (response.success === true) {
+      setResponse(res, response.statusCode, response.message);
+    }
+    else {
+      setResponse(res, response.statusCode, response.message);
+    }
   }
-  else {
-    res.send(201);
+  catch (e) {
+    setResponse(res, 500, e.message);
   }
 }
 
@@ -52,6 +68,6 @@ export const tokenReject = (req, res) => {
   if (refreshToken in refreshTokens) {
     delete refreshTokens[refreshToken]
   }
-  
+
   res.send(204);
 }
