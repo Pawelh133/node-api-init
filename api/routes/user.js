@@ -1,5 +1,8 @@
 import validate from 'express-validation';
 import express from 'express';
+import jwt from 'jsonwebtoken';
+import randtoken from 'rand-token';
+import passport from 'passport';
 
 import { mongooseIdRegExp } from '../config/values';
 import * as userController from '../controllers/userController';
@@ -13,8 +16,8 @@ const userRoutes = (routename, app) => {
     userIdValidRegExp.test(id) ? next() : res.sendStatus(404);
   });
 
-  router.get('/', userController.listUsers)
-  router.get('/:userId', userController.getUserById)
+  router.get('/', passport.authenticate('jwt'), userController.listUsers);
+  router.get('/:userId', userController.getUserById);
   router.post('/', validate(userValidation.create), userController.createUser);
   router.delete('/:userId', )
 
