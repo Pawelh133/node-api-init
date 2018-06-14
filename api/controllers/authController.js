@@ -11,25 +11,33 @@ export const register = async (req, res) => {
     const password = req.body.password;
 
     if (!username) {
-      setResponse(400, 'username nie może być pusty');
+      setResponse({
+        statusCode: 400,
+        message: 'username nie może być pusty'
+      });
+
       return;
     }
 
     if (password.length < process.env.MIN_PASSWORD_LENGTH) {
-      setResponse(400, `hasło musi zawierać przynajmniej ${process.env.MIN_PASSWORD_LENGTH} znaki.`);
+      setResponse({
+        statusCode: 400,
+        message: `hasło musi zawierać przynajmniej ${process.env.MIN_PASSWORD_LENGTH} znaki.`
+      });
+
       return;
     }
 
     const response = await authService.register(username, password);
     if (response.success === true) {
-      setResponse(res, response.statusCode, response.message);
+      setResponse(res, response);
     }
     else {
-      setResponse(res, response.statusCode, response.message);
+      setResponse(res, response);
     }
   }
   catch (e) {
-    setResponse(res, 500, e.message);
+    setResponse(res, { statusCode: 500, message: e.message });
   }
 }
 
