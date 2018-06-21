@@ -13,7 +13,6 @@ export const listUsers = (req, res) => {
 };
 
 //Mongo
-
 export const createUser = (req, res) => {
   const new_user = new Users(req.body);
   new_user.save((err, user) => {
