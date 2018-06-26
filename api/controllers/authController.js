@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import randtoken from 'rand-token';
 import setResponse from '../helpers/statusMessageHelper';
 import * as authService from '../services/authService';
+import * as roleService from '../services/roleService';
 import statusCode from '../constants/statusCode';
 
 let refreshTokens = {};
@@ -45,17 +46,23 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
-  // const user = {
-  //   'username': username,
-  //   'role': 'admin'
-  // };
 
-  const user = await authService.getUser(username);
+  const result = await roleService.getUserRoles(username);
 
-  const token = jwt.sign(user, process.env.SECRET, { expiresIn: 300 })
-  const refreshToken = randtoken.uid(256)
-  refreshTokens[refreshToken] = username;
-  res.json({ token: 'JWT ' + token, refreshToken: refreshToken })
+  if (result.success) {
+    const user = {
+      'username': req.body.username,
+      'role': result.data.roles
+    };
+    
+    const token = jwt.sign(user, process.env.SECRET, { expiresIn: 300 })
+    const refreshToken = randtoken.uid(256);
+    refreshTokens[refreshToken] = username;
+    res.json({ token: 'JWT ' + token, refreshToken: refreshToken })
+  }
+  else {
+    setResponse(res, { statusCode: result.statusCode, message: result.message });
+  }
 }
 
 export const token = (req, res) => {

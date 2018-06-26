@@ -1,6 +1,4 @@
 import dotenv from 'dotenv/config';
-import Sequelize from 'sequelize';
-import sequelizeRegister from '../register/sequelizeRegister';
 import User from './model/user';
 import Role from './model/role';
 import UsersRoles from './model/usersRoles';
@@ -26,31 +24,13 @@ Role.belongsToMany(User, {
   foreignKey: 'roleId',
 });
 
-// console.log('$$$$$$$$$$$$$$$$$$$$$$$$$$$$4', models);
-// Object.values(models)
-//   .filter(model => model.associate)
-//   .forEach(model => model.associate(models));
+const models = {
+  Role: Role,
+  User: User,
+  UsersRoles: UsersRoles,
+  AppClients: AppClients,
+  RefreshTokens: RefreshTokens
+}
 
-sequelizeRegister.sync({ force: process.env.DB_CREATE_WITH_FORCE }).then(() => {
-  const userId = '21c86c51-81ed-4f1e-b94c-1edd55a7b8aa';
-  const roleId = 1;
+export default models;
 
-  AppClients.create({
-    name: 'cwel',
-    active: true
-  });
-  User.create({
-    id: userId,
-    userName: 'pawelh133',
-    password: 'cwel123',
-    isConfirmed: true
-  });
-  Role.create({
-    id: roleId,
-    name: 'admin'
-  })
-  // UsersRoles.create({
-  //   userId: userId,
-  //   roleId: roleId
-  // })
-});

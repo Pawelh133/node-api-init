@@ -8,7 +8,7 @@
     "start": "nodemon api/server.js --require dotenv/config --exec babel-node --presets env",
     "build": "babel api -d dist",
     "serve": "node dist/server.js",
-    "dbmigrate": "babel-node ./api/database/migrations --require dotenv/config --presets env"
+    "dbmigrate": "babel-node ./api/database --require dotenv/config --presets env"
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
