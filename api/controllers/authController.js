@@ -1,9 +1,9 @@
-import jwt from 'jsonwebtoken';
-import randtoken from 'rand-token';
 import setResponse from '../helpers/statusMessageHelper';
 import * as authService from '../services/authService';
 import * as roleService from '../services/roleService';
+import * as tokenService from '../services/tokenService';
 import statusCode from '../constants/statusCode';
+
 
 let refreshTokens = {};
 
@@ -46,19 +46,23 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
-
-  const result = await roleService.getUserRoles(username);
+  const result = await authService.getUserbyAuth(username, password);
 
   if (result.success) {
-    const user = {
-      'username': req.body.username,
-      'role': result.data.roles
-    };
-    
-    const token = jwt.sign(user, process.env.SECRET, { expiresIn: 300 })
-    const refreshToken = randtoken.uid(256);
-    refreshTokens[refreshToken] = username;
-    res.json({ token: 'JWT ' + token, refreshToken: refreshToken })
+    const getRoleResult = await roleService.getUserRoles(username);
+    if (getRoleResult.success) {
+      const assignRefreshTokenResult = await tokenService.assignUserRefreshToken(result.user);
+      if (assignRefreshTokenResult.success) {
+        res.status(statusCode.ok);
+        res.json({ token: 'JWT ' + assignRefreshTokenResult.token, refreshToken: assignRefreshTokenResult.refreshToken })
+      }
+      else {
+        setResponse(res, { statusCode: assignRefreshTokenResult.statusCode, message: assignRefreshTokenResult.message });
+      }
+    }
+    else {
+      setResponse(res, { statusCode: getRoleResult.statusCode, message: getRoleResult.message });
+    }
   }
   else {
     setResponse(res, { statusCode: result.statusCode, message: result.message });
@@ -81,11 +85,8 @@ export const token = (req, res) => {
   }
 }
 
-export const tokenReject = (req, res) => {
-  const refreshToken = req.body.refreshToken;
-  if (refreshToken in refreshTokens) {
-    delete refreshTokens[refreshToken]
-  }
+export const tokenReject = async (req, res) => {
+  const result = await tokenService.tokenReject(req.body.refreshToken);
 
-  res.send(statusCode.noContent);
+  setResponse(res, { statusCode: result.statusCode, message: result.message });
 }

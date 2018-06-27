@@ -1,6 +1,7 @@
 import Role from '../database/model/role';
 import models from '../database/migrations';
 import _ from 'lodash';
+import statusCode from '../constants/statusCode';
 
 export const getUserRoles = async (name, pass) => {
   try {
@@ -16,7 +17,7 @@ export const getUserRoles = async (name, pass) => {
     if (!result) {
       return { success: false, statusCode: statusCode.notFound }
     }
-    else if (!_.some(result.roles)) {
+    else if (_.isEmpty(result.roles)) {
       return { success: false, statusCode: statusCode.error, message: 'user does not contain roles' }
     }
 

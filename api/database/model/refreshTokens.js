@@ -6,10 +6,10 @@ const RefreshTokens = sequelizeRegister.define('refreshTokens', {
     type: Sequelize.UUID
   },
   refreshToken: {
-    type: Sequelize.STRING,
+    type: Sequelize.TEXT,
     allowNull: false
   },
-  expiresUtc: {
+  expiresIn: {
     type: Sequelize.DATE,
     allowNull: false,
     defaultValue: Sequelize.NOW

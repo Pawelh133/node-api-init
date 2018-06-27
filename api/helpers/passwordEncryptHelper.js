@@ -8,7 +8,11 @@ export const saltHashPassword = (userpassword) => {
 }
 
 export const compareHashedPassword = (userPassword, hashedPassword, salt) => {
-  return hashedPassword === sha512(userPassword, salt);
+  if (userPassword && hashedPassword && salt) {
+    return hashedPassword === sha512(userPassword, salt).passwordHash
+  }
+
+  return false
 }
 
 const genRandomString = (length) => {
@@ -26,3 +30,4 @@ const sha512 = (password, salt) => {
     passwordHash: value
   };
 };
+
