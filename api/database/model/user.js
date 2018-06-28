@@ -2,9 +2,10 @@ import Sequelize from 'sequelize';
 import sequelizeRegister from '../../register/sequelizeRegister';
 
 const User = sequelizeRegister.define('user', {
-  userId: {
+  id: {
     type: Sequelize.UUID,
-    defaultValue: Sequelize.UUIDV4
+    defaultValue: Sequelize.UUIDV4,
+    primaryKey: true,
   },
   userName: {
     type: Sequelize.STRING
@@ -12,9 +13,12 @@ const User = sequelizeRegister.define('user', {
   password: {
     type: Sequelize.STRING
   },
+  salt: {
+    type: Sequelize.STRING
+  },
   isConfirmed: {
     type: Sequelize.BOOLEAN
-  }
+  },
 });
 
 export default User;

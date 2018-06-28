@@ -1,6 +1,10 @@
-const setResponse = (res, statusCode, message) => {
-    res.status(statusCode);
-    message ? res.send(message) : res.send();
+import _ from 'lodash';
+
+const setResponse = (res, response) => {
+  res.status(response.statusCode);
+  res.send(
+    _.omit(response, ['statusCode', 'success'])
+  );
 }
 
 export default setResponse;

@@ -7,7 +7,7 @@ const authRoutes = (routename, app) => {
   router.post('/register', authController.register);
   router.post('/login', authController.login);
   router.post('/token', authController.token);
-  router.post('/token/reject', authController.tokenReject)
+  router.delete('/token', authController.tokenReject);
 
   app.use(routename, router);
 }

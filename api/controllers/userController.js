@@ -1,8 +1,7 @@
 import mongoose from 'mongoose';
-import _ from 'lodash';
 const Users = mongoose.model('Users');
 
-import User from '../database/model/userModel';
+import User from '../database/model/user';
 
 //mysql
 export const listUsers = (req, res) => {
@@ -14,7 +13,6 @@ export const listUsers = (req, res) => {
 };
 
 //Mongo
-
 export const createUser = (req, res) => {
   const new_user = new Users(req.body);
   new_user.save((err, user) => {
