@@ -34,6 +34,7 @@ export const getUserbyAuth = async (name, pass) => {
         userName: name
       }
     });
+    
     if (user) {
       const compareSuccess = compareHashedPassword(pass, user.dataValues.password, user.dataValues.salt);
 

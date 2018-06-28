@@ -14,6 +14,8 @@ User.hasMany(RefreshTokens, {
   foreignKey: 'userId',
 });
 
+RefreshTokens.belongsTo(User, { foreignKey: 'userId' });
+
 User.belongsToMany(Role, {
   through: UsersRoles,
   foreignKey: 'userId',

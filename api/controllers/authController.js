@@ -49,9 +49,11 @@ export const login = async (req, res) => {
   const result = await authService.getUserbyAuth(username, password);
 
   if (result.success) {
-    const getRoleResult = await roleService.getUserRoles(username);
-    if (getRoleResult.success) {
-      const assignRefreshTokenResult = await tokenService.assignUserRefreshToken(result.user);
+    const getRolesResult = await roleService.getUserRoles(username);
+
+    if (getRolesResult.success) {
+      const assignRefreshTokenResult = await tokenService.assignUserRefreshToken(result.user, getRolesResult.roles);
+
       if (assignRefreshTokenResult.success) {
         res.status(statusCode.ok);
         res.json({ token: 'JWT ' + assignRefreshTokenResult.token, refreshToken: assignRefreshTokenResult.refreshToken })
@@ -61,7 +63,7 @@ export const login = async (req, res) => {
       }
     }
     else {
-      setResponse(res, { statusCode: getRoleResult.statusCode, message: getRoleResult.message });
+      setResponse(res, { statusCode: getRolesResult.statusCode, message: getRolesResult.message });
     }
   }
   else {
@@ -69,20 +71,16 @@ export const login = async (req, res) => {
   }
 }
 
-export const token = (req, res) => {
-  const username = req.body.username
-  const refreshToken = req.body.refreshToken
-  if ((refreshToken in refreshTokens) && (refreshTokens[refreshToken] == username)) {
-    const user = {
-      'username': username,
-      'role': 'admin'
-    }
-    const token = jwt.sign(user, process.env.SECRET, { expiresIn: 300 })
-    res.json({ token: 'JWT ' + token })
-  }
-  else {
-    res.send(statusCode.unauthorized);
-  }
+export const token = async (req, res) => {
+  const result = await tokenService.generateToken(req.body.userName, req.body.refreshToken);
+
+  setResponse(res, {
+    message: result.message,
+    statusCode: result.statusCode,
+    token: result.token,
+    refreshToken: result.refreshToken,
+    expiresIn: result.expiresIn
+  });
 }
 
 export const tokenReject = async (req, res) => {
